@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!--### 6、yarn资源调度：mapred.xml（分发到其它机器） ###-->
+<!--### Yarn HA RM高可用 ###-->
+
+<!--文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/mapred-site.xml-->
+<!--官网位置：https://hadoop.apache.org/docs/r2.7.7/hadoop-project-dist/hadoop-common/mapred-default.xml-->
+
+<configuration>
+
+    <!--设置MR程序默认运行模式，yarn集群模式，local本地模式-->
+    <!--将MR任务的执行交给yarn资源调度来管理-->
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+
+    <!--MR程序历史服务地址-->
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>bd91:10020</value>
+    </property>
+
+    <!--MR程序历史服务Web端地址-->
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>bd91:19888</value>
+    </property>
+
+    <!--Yarn环境变量-->
+    <property>
+        <name>yarn.app.mapreduce.am.env</name>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+
+    <!--Map环境变量-->
+    <property>
+        <name>mapreduce.map.env</name>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+
+    <!--Reduce环境变量-->
+    <property>
+        <name>mapreduce.reduce.env</name>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+
+    <!--
+    A、启动HDFS相关服务
+    1、3台机器同时启动journalnode：hdfs --daemon start journalnode
+    2、HDFS NameNode数据同步：
+    bd91执行格式化(第一次配置下可用，已运行集群不可用)：hdfs namenode -format
+    3、共享日志文件初始化(第一次配置下可用，已运行集群不可用)：
+    hdfs namenode -initializeSharedEdits
+    4、启动bd91上的NameNode节点：hdfs -daemon start namenode
+    bd92节点上同步镜像数据：hdfs namenode -bootstrapStandby
+    启动bd92上的NameNode节点：hdfs -daemon start namenode
+    5、zookeeper FailerController格式化
+    bd91上执行：hdfs zkfc -formatZK
+    6、namenode节点上安装psmisc（ZKFC主机）:ZKFC远程杀死SNN使用的
+    killall namenode命令属于psmisc软件中的，建议所有节点都安装psmisc
+    bd91和bd92上执行：yum install -y psmisc
+    7、添加环境变量：
+    方式1：在./hadoop-2.7.7/sbin中为start-dfs.sh和stop-dfs.sh顶部添加如下环境变量：
+    方式2：在/etc/profile中添加如下环境变量，source刷新
+    export HDFS_NAMENODE_USER=root
+    export HDFS_DATANODE_USER=root
+    export HDFS_JOURNALNODE_USER=root
+    export HDFS_SECONDARYNAMENODE_USER=root
+    export YARN_RESOURCEMANAGER_USER=root
+    export YARN_NODEMANAGER_USER=root
+    export HDFS_ZKFC_USER=root
+
+    B、启动Yarn相关服务
+    8、启动HDFS
+    bd91上启动hdfs：start-dfs.sh
+    3台机器验证：jps
+    Web-UI地址：http://bd91:9870/ 和 http://bd92:9870/
+    9、启动Yarn
+    start-yarn.sh
+    3台机器验证：jps
+    Web-UI地址：http://bd91:8088/ 和 http://bd92:8088/
+    10、启动MapReduce任务历史服务
+    bd91上执行：mapred --daemon start historyserver
+
+    C、NameNode HA验证
+    11、查看所有NameNode节点的状态：hdfs haadmin -getAllServiceState
+    模拟故障；NameNode HA故障恢复：hdfs -daemon start namenode
+
+    D、Yarn RM HA验证
+    12、查看所有ResourceManager节点状态：hdfs rmadmin -getAllServiceState
+    模拟故障；RM HA故障恢复：yarn -daemon start resourcemanager
+    -->
+
+</configuration>

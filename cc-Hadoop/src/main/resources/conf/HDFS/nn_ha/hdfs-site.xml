@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!--
+### Hadoop HA高可用（QJM） ###
+### 前提：配置Zookeeper ###
+### NN HA下的Yarn HA高可用：见文件：Yarn/rm_ha/ ###
+-->
+
+<!--### 3、配置NN HA和SN ###-->
+
+<!--文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/hdfs-site.xml-->
+<!--官网位置：https://hadoop.apache.org/docs/r2.7.7/hadoop-project-dist/hadoop-common/hdfs-default.xml-->
+
+<configuration>
+
+    <!--配置SecondaryNameNode启动的节点：bd93主机-->
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>bd93:50090</value>
+    </property>
+
+    <!--为NameNode集群定义一个services-name，默认值为null-->
+    <property>
+        <name>dfs.nameservices</name>
+        <value>myhdfs</value>
+    </property>
+
+    <!--nameservices包含哪些NameNode，为各个NameNode起名，默认值为null，如设置nn1,nn2-->
+    <property>
+        <name>dfs.ha.namenodes.myhdfs</name>
+        <value>nn1,nn2</value>
+    </property>
+
+    <!--名为nn1的NameNode的RPC地址和端口号，RPC用来和DataNode通讯，默认端口为9000-->
+    <property>
+        <name>dfs.namenode.rpc-address.myhdfs.nn1</name>
+        <value>bd91:9000</value>
+    </property>
+
+    <!--名为nn2的NameNode的rpc地址和端口号，RPC用来和DataNode通讯，默认端口为9000-->
+    <property>
+        <name>dfs.namenode.rpc-address.myhdfs.nn2</name>
+        <value>bd92:9000</value>
+    </property>
+
+    <!--名为nn1的NameNode的HTTP地址和端口号，Web客户端-->
+    <property>
+        <name>dfs.namenode.http-address.myhdfs.nn1</name>
+        <value>bd91:9870</value>
+    </property>
+
+    <!--名为nn2的NameNode的HTTP地址和端口号，Web客户端-->
+    <property>
+        <name>dfs.namenode.http-address.myhdfs.nn2</name>
+        <value>bd92:9870</value>
+    </property>
+
+    <!--NameNode间用于共享编辑日志的journal节点列表-->
+    <property>
+        <name>dfs.namenode.shared.edits.dir</name>
+        <value>qjournal://bd91:8485;bd92:8485;bd93:8485/myhdfs</value>
+    </property>
+
+    <!--客户端连接可用状态的NameNode所用的代理类，默认为org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider-->
+    <property>
+        <name>dfs.client.failover.proxy.provider.myhdfs</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+    </property>
+
+    <!--
+    HDFS的HA功能的防脑裂方法：可以是内建的方法(例如shell和sshfence)或者用户定义的方法
+    建议使用sshfence(hadoop:9922)，括号内的是用户名和端口（注意：这需要NN的2台机器之间能够免密码登陆）
+    fences是防止脑裂的方法，保证NN中仅一个是Active的，如果两者都是Active的，新的会把旧的强制Kill
+    -->
+    <property>
+        <name>dfs.ha.fencing.methods</name>
+        <value>sshfence</value>
+    </property>
+
+    <!--指定上述选项ssh通讯使用的密钥文件在系统中的位置-->
+    <property>
+        <name>dfs.ha.fencing.ssh.private-key-files</name>
+        <value>/root/.ssh/id_rsa</value>
+    </property>
+
+    <!--失效转移时使用的秘钥文件-->
+    <property>
+        <name>dfs.journalnode.edits.dir</name>
+        <value>/opt/bigdata/hadoop/hadoop-3.3.4/data/journalnode</value>
+    </property>
+
+    <!--开启NameNode失败自动切换-->
+    <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
+    </property>
+
+    <!--配置失败自动切换实现方式-->
+    <property>
+        <name>dfs.client.failover.proxy.provider.myhdfs</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+    </property>
+
+    <!--设置数据块应该被复制的份数（副本数），默认为3-->
+    <property>
+        <name>dfs.replication</name>
+        <value>3</value>
+    </property>
+
+    <!--是否开启权限检查 -->
+    <property>
+        <name>dfs.permissions.enabled</name>
+        <value>false</value>
+    </property>
+
+</configuration>

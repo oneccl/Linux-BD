@@ -1,0 +1,8 @@
+
+### ES配置（每个节点都配） ###
+### /opt/module/elasticsearch-7.5.2/config/jvm.options ###
+
+# 修改服务器内存(不够会启动失败)，默认1G
+
+-Xms256m
+-Xmx256m

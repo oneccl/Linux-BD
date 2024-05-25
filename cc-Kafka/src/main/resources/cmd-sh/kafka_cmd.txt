@@ -1,0 +1,33 @@
+
+Kafka命令行操作(shell)
+// 启动（先启动kafka再启动kafka-ui）
+kafka-server-start.sh -daemon ./config/server.properties
+
+1、显示所有主题
+kafka-topics.sh --list --zookeeper bd91:2181
+
+2、创建主题                                                     分区数          副本数
+kafka-topics.sh --create --topic t_name --zookeeper bd91:2181 --partitions 3 --replication-factor 2
+
+3、生产者控制台发送消息(数据)
+kafka-console-producer.sh --topic t_name --broker-list bd91:9092
+
+4、消费者控制台实时接收消息(数据)                                           是否接收起始数据
+kafka-console-consumer.sh --topic t_name --bootstrap-server bd91:9092 --from-beginning
+
+5、查询指定topic详情
+kafka-topics.sh --describe --topic t_name --zookeeper bd91:2181
+
+Topic: t_name     PartitionCount: 3       ReplicationFactor: 2    Configs:
+       Topic: t_name     Partition: 0    Leader: 93      Replicas: 93,91 Isr: 93,91
+       Topic: t_name     Partition: 1    Leader: 91      Replicas: 91,92 Isr: 91,92
+       Topic: t_name     Partition: 2    Leader: 92      Replicas: 92,93 Isr: 92,93
+
+6、删除topic
+需要设置允许删除topic（否则只是标记删除）
+delete.topic.enable=true
+
+kafka-topics.sh --zookeeper bd91:2181 --delete --topic t_name
+
+
+

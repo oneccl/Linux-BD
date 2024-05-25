@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!--### yarn资源调度：mapred-site.xml ###-->
+<!--### 分发到其它机器 ###-->
+
+<!--文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/mapred-site.xml-->
+<!--官网位置：https://hadoop.apache.org/docs/r2.7.7/hadoop-project-dist/hadoop-common/mapred-default.xml-->
+
+<configuration>
+
+    <!--将MR任务的执行交给yarn资源调度来管理-->
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+
+    <!--MR程序历史服务地址-->
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>bd91:10020</value>
+    </property>
+
+    <!--MR程序历史服务Web端地址-->
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>bd91:19888</value>
+    </property>
+
+</configuration>

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--Maven项目-->
+
+    <groupId>com.cc</groupId>
+    <artifactId>Linux-BD</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>cc-Hadoop</module>
+        <module>cc-Flume</module>
+        <module>cc-Scala</module>
+        <module>cc-Spark</module>
+        <module>cc-Hive</module>
+        <module>cc-Linux</module>
+        <module>cc-HBase</module>
+        <module>cc-Kafka</module>
+        <module>cc-Flink</module>
+        <module>cc-Elasticsearch</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <junit.version>4.11</junit.version>
+        <lombok.version>1.18.16</lombok.version>
+        <hadoop.version>2.7.7</hadoop.version>
+        <httpclient.version>4.5.8</httpclient.version>
+        <fastjson.version>1.2.72</fastjson.version>
+        <spark.version>3.1.2</spark.version>
+        <baidu.aip.java-sdk.version>4.16.12</baidu.aip.java-sdk.version>
+        <mysql-version>8.0.28</mysql-version>
+        <hive.version>2.3.9</hive.version>
+        <hbase.version>1.3.5</hbase.version>
+        <kafka.version>2.4.1</kafka.version>
+        <flink.version>1.14.4</flink.version>
+        <es.version>7.5.2</es.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--单元测试-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <!--Lombok-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <!--Hadoop客户端依赖-->
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+
+            <!--第三方工具：获取IP详细信息(归属地)API-->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
+            <!--Alibaba工具：将Json格式字符串转换为Map-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!--Spark相关组件依赖-->
+            <!--Spark-Core: 程序入口:SparkContext,数据对象:RDD-->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-core_2.12</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <!--Spark-SQL: 程序入口:SparkSession,数据对象:DataFrame/Dataset-->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-sql_2.12</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <!--Spark-Streaming: 程序入口:StreamingContext,数据对象:DStream-->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-streaming_2.12</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <!--Spark-Streaming操作Kafka依赖-->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-streaming-kafka-0-10_2.12</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+            <!--Spark on Hive依赖-->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-hive_2.12</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+
+            <!--Spark Mllib机器学习-->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-mllib_2.12</artifactId>
+                <version>${spark.version}</version>
+            </dependency>
+
+            <!--第三方工具：百度AI->语言与知识->词法分析依赖-->
+            <dependency>
+                <groupId>com.baidu.aip</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>${baidu.aip.java-sdk.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!--Mysql依赖-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-version}</version>
+            </dependency>
+
+            <!--Hive客户端和函数依赖-->
+            <dependency>
+                <groupId>org.apache.hive</groupId>
+                <artifactId>hive-exec</artifactId>
+                <version>${hive.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hive</groupId>
+                <artifactId>hive-common</artifactId>
+                <version>${hive.version}</version>
+            </dependency>
+
+            <!--HBase客户端依赖-->
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-client</artifactId>
+                <version>${hbase.version}</version>
+            </dependency>
+
+            <!--Kafka客户端依赖-->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+
+
+            <!--Flink核心依赖：包含系统运行所需的类和依赖项-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-core</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--Flink客户端依赖-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-clients_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+
+            <!--Flink-Java-API版依赖-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-java</artifactId>
+                <version>${flink.version}</version>
+                <!--provided: 表示打包时不将该依赖打包进去，避免生成的JAR过大-->
+<!--                <scope>provided</scope>-->
+            </dependency>
+            <!--Java: 流处理应用程序和批处理应用程序所需依赖-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-streaming-java_2.12</artifactId>
+                <version>${flink.version}</version>
+<!--                <scope>provided</scope>-->
+            </dependency>
+
+            <!--Flink-Scala-API版依赖-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-scala_2.12</artifactId>
+                <version>${flink.version}</version>
+<!--                <scope>provided</scope>-->
+            </dependency>
+            <!--Scala: 流处理应用程序和批处理应用程序所需依赖-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-streaming-scala_2.12</artifactId>
+                <version>${flink.version}</version>
+<!--                <scope>provided</scope>-->
+            </dependency>
+
+            <!--Flink-Kafka-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-kafka_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--Flink-MySQL-->
+            <!--还需要MySQL驱动依赖，上面已导入-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-jdbc_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--Flink-HDFS-->
+            <!--还需要Hadoop客户端依赖，上面已导入-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-hadoop-compatibility_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--Flink-Hive-->
+            <!--还需要Hive-exec客户端依赖，上面已导入-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-hive_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+
+            <!--Flink提供的其它Sink连接器-->
+            <!--Flink-ES-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-elasticsearch7_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+
+            <!--##### Flink-Table-API和SQL依赖 #####-->
+
+            <!--
+            Flink-Table-API: 部分Table相关代码使用Scala开发，需要导入Flink-Scala相关依赖（上面已导入）
+            桥接器(bridge)主要负责Table-API和下层DataStream-API的连接支持，按照不同的语言分为Java版和Scala版
+            -->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-table-api-scala-bridge_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--Flink计划器引擎: 提供运行环境，并生成程序的执行计划（程序执行需要）-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-table-planner_2.12</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <!--Flink-Table-API其它支持，如自定义函数-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-table-common</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+
+            <!--Flink工具-->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-json</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-csv</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+
+            <!--Elasticsearch-->
+            <!--ES-7.x以上推荐使用的客户端-->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${es.version}</version>
+            </dependency>
+            <!--ES所有版本通用客户端-->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client</artifactId>
+                <version>${es.version}</version>
+            </dependency>
+            <!--ES核心组件-->
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${es.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>

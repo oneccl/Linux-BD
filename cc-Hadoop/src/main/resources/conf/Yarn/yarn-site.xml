@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!--### yarn资源调度：yarn-site.xml ###-->
+<!--### 分发到其它机器 ###-->
+
+<!--文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/yarn-site.xml-->
+<!--官网位置：https://hadoop.apache.org/docs/r2.7.7/hadoop-project-dist/hadoop-common/yarn-default.xml-->
+
+<configuration>
+
+    <!--资源管理器ResourceManager所在主机-->
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>bd91</value>
+    </property>
+
+    <!--允许MR任务运行在所有NodeManager节点-->
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+
+</configuration>
+
+<!--### Linux下执行MR任务 ###-->
+<!--
+执行        官方wordcount范例jar                                                     任务名     hdfs文件     结果输出
+hadoop jar hadoop-2.7.7/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.7.jar wordcount /Harry.txt /yarnOut
+-->

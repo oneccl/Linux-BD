@@ -1,0 +1,19 @@
+
+##### Flink JobManager高可用配置 #####
+
+# 启动高可用
+high-availability: zookeeper
+
+# Zookeeper集群
+high-availability.zookeeper.quorum: bd91:2181,bd92:2181,bd93:2181
+
+# 高可用存储目录：JobManager的元数据持久化到文件系统，一般是HDFS地址
+high-availability.storageDir: hdfs:///flink/recovery
+
+# 为每个集群指定一个ID（每个flink_jm集群自定义）
+high-availability.cluster-id: /flink_jm1
+
+# 指定ZooKeeper的根节点，集群的所有节点都放在该节点下
+high-availability.zookeeper.path.root: /flink
+
+

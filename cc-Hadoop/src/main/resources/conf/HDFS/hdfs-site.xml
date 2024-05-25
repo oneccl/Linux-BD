@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!--### 3、配置SecondaryNameNode启动的节点 ###-->
+
+<!--文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/hdfs-site.xml-->
+<!--官网位置：https://hadoop.apache.org/docs/r2.7.7/hadoop-project-dist/hadoop-common/hdfs-default.xml-->
+
+<configuration>
+
+    <!--配置SecondaryNameNode启动的节点：bd93主机-->
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>bd93:50090</value>
+    </property>
+
+<!--    &lt;!&ndash;NameNode-fsimage和edits数据存储的目录：默认：${hadoop.tmp.dir}/dfs/name&ndash;&gt;-->
+<!--    &lt;!&ndash;其中hadoop.tmp.dir在core-site.xml中已配置&ndash;&gt;-->
+<!--    <property>-->
+<!--        <name>dfs.namenode.name.dir</name>-->
+<!--        <value>${hadoop.tmp.dir}/dfs/name</value>-->
+<!--    </property>-->
+<!--    &lt;!&ndash;DateNode数据块存储的目录：默认：${hadoop.tmp.dir}/dfs/data&ndash;&gt;-->
+<!--    <property>-->
+<!--        <name>dfs.datanode.data.dir</name>-->
+<!--        <value>${hadoop.tmp.dir}/dfs/data</value>-->
+<!--    </property>-->
+
+</configuration>

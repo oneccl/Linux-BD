@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!--### 2、HDFS核心配置文件(配置namenode启动的节点) ###-->
+
+<!--文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/core-site.xml-->
+<!--官网位置：https://hadoop.apache.org/docs/r2.7.7/hadoop-project-dist/hadoop-common/core-default.xml-->
+
+<configuration>
+
+    <!--配置hadoop存储临时数据的目录，设置到hadoop的安装目录下-->
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>/opt/module/hadoop-2.7.7/data</value>
+    </property>
+
+    <!--配置hdfs(分布式文件管理系统)的默认连接路径URI-->
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://bd91:8020</value>
+    </property>
+
+</configuration>

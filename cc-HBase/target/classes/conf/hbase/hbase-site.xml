@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+    <property>
+        <!-- hbase保存数据的hdfs根目录(HMaster) -->
+        <name>hbase.rootdir</name>
+        <value>hdfs://bd91:8020/hbase</value>
+    </property>
+
+    <property>
+        <!-- 开启habse的集群模式 -->
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <!-- 设置连接Hbase的zk集群 -->
+        <name>hbase.zookeeper.quorum</name>
+        <value>bd91:2181,bd92:2181,bd93:2181</value>
+    </property>
+
+    <property>
+        <!-- 设置zk保存数据的路径 -->
+        <name>hbase.zookeeper.property.dataDir</name>
+        <value>/opt/module/zookeeper-3.4.14/data</value>
+    </property>
+
+</configuration>

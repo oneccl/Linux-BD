@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!--
+### Hiveserver2 HA高可用 ###
+### Hive Metastore HA高可用 ###
+### 前提：配置Zookeeper ###
+### hadoop-core-site.xml、hive-env.sh文件不动 ###
+-->
+
+<!--
+1）Hiveserver2 HA高可用
+Client端通过指定一个Namespace来连接HiveServer2，而不是指定某一个Host和Port：
+jdbc:hive2://<zookeeper quorum>/<dbName>;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+其中zooKeeperNamespace指定ZK中的Namespace，即参数hive.server2.zookeeper.namespace配置值
+2）Hive Metastore HA高可用
+客户端始终使用第一个URI连接到Metastore服务器，如果该Metastore无法访问，则客户端将从列表中其它URI随机选取一个尝试建立与Metastore连接
+-->
+<!--参考文章：
+https://www.cnblogs.com/shine-rainbow/p/17130874.html
+https://blog.51cto.com/u_12831/6792202
+-->
+
+<!--配置后验证
+1）在bd91(Master)和bd93(Slave)上启动hiveserver2服务及metastore进程
+nohup hive --service hiveserver2 &
+nohup hive --service metastore &
+2）使用Zookeeper客户端命令查看Hiveserver2服务是否在ZK中注册成功（依次输入如下命令）
+zkCli.sh -server bd91:2181
+ls /
+ls /hiveserver2
+3）HA测试
+ 3.1）Kill掉bd93(Slave)hiveserver2服务（依次输入如下命令）：
+ netstat -ntpl | grep 10000
+ ps -ef | grep metastore
+ kill -9  pid
+ 3.2）beeline测试连接
+ bd91(Master)执行命令：beeline
+ beeline命令行执行：!connect jdbc:hive2://bd91:2181,bd92:2181,bd93:2181/default;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2 root 123456
+ show databases;
+-->
+
+<!--Hive-cli(hive)与Beeline的区别
+参考文章：https://www.cnblogs.com/gzgBlog/p/14902120.html
+发展：Hive-cli(hive)是Hive连接hiveserver2的命令行工具，从Hive出生就一直存在，但随着Hive功能的增强、BUG的修复、版本升级，Hive-cli结构的局限性跟不上Hive的发展，如果强行更改又不能满足向下兼容，就出现了全新的beeline命令行结构，Hive-cli能做的事beeline都能做，而beeline能做的事Hive-cli不一定能做
+Hive-cli的特点:
+1）Hive-cli是通过Metastore访问元数据的
+2）CliDriver是SQL本地直接编译，然后访问Metastore，提交作业，是重客户端
+3）执行hive会自动运行一个RunJar进程，进程是提供Thrift的RPC的，就是Metastore服务
+Beeline的特点:
+1）beeline是一个纯粹的客户端，用来连接hiveserver2
+2）beeLine将SQL提交给Hiveserver2，由Hiveserver2编译，然后访问Metastore，提交作业，是轻客户端
+3）多用户、安全、可以实现其权限控制
+区别:
+beeline有权限控制而Hive-cli没有，因为Hive-cli读取元数据绕过了Hiveserver2直接从Metastore访问元数据，而beeline通过Hiveserver2的管控，实现其多用户的权限控制
+-->
+
+<configuration>
+    <!--数据库连接URL-->
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:mysql://bd91:3306/metastore?characterEncoding=UTF-8</value>
+    </property>
+    <!--数据库驱动-->
+    <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>com.mysql.cj.jdbc.Driver</value>
+    </property>
+    <!--数据库用户名-->
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>root</value>
+    </property>
+    <!--数据库密码-->
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>123456</value>
+    </property>
+
+    <!--Hiveserver2 HA高可用配置-->
+
+    <property>
+        <name>hive.server2.support.dynamic.service.discovery</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <name>hive.server2.zookeeper.namespace</name>
+        <value>hiveserver2</value>
+    </property>
+
+    <property>
+        <name>hive.zookeeper.quorum</name>
+        <value>bd91:2181,bd92:2181,bd93:2181</value>
+    </property>
+
+    <property>
+        <name>hive.zookeeper.client.port</name>
+        <value>2181</value>
+    </property>
+
+    <property>
+        <name>hive.server2.thrift.port</name>
+        <value>10000</value>
+    </property>
+
+    <!--可以通过下面配置指定Hiveserver2 HA节点(及个数)-->
+    <!--例如指定bd91(Master)和bd93(Slave)，除了bd91，需要修改bd93节点hive-site.xml中该配置value值为bd93-->
+    <!--若无下面配置，Hiveserver2 HA节点为全部机器-->
+    <property>
+        <name>hive.server2.thrift.bind.host</name>
+        <value>bd91</value>
+    </property>
+
+    <!--Hive Metastore HA高可用配置-->
+
+    <!--可以通过下面配置指定Hive Metastore HA节点(及个数)-->
+    <!--若无下面配置，Hive Metastore HA节点为全部机器-->
+    <property>
+        <name>hive.metastore.uris</name>
+        <value>thrift://bd91:9083,thrift://bd93:9083</value>
+    </property>
+
+</configuration>

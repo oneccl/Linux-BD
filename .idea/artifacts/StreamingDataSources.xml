@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="StreamingDataSources">
+    <output-path>$PROJECT_DIR$/out/artifacts/StreamingDataSources</output-path>
+    <root id="archive" name="StreamingDataSources.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/cc-Spark/src/main/java/com/SparkStreaming/day0307/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="directory" name="com">
+        <element id="directory" name="SparkStreaming">
+          <element id="file-copy" path="$PROJECT_DIR$/cc-Spark/target/classes/com/SparkStreaming/DataSources.class" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

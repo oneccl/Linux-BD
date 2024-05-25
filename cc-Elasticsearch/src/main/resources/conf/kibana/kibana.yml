@@ -1,0 +1,19 @@
+
+
+### Kibana可视化组件配置 ###
+### /opt/module/kibana-7.5.2/config/kibana.yml ###
+
+# 服务端口
+server.port: 5601
+
+# 服务主机设置0.0.0.0代表通配，自动寻找可用的主机标识方式
+server.host: "0.0.0.0"
+
+# 当前服务的主机名
+server.name: "bd91"
+
+# 连接的ES集群的地址
+elasticsearch.hosts: ["http://bd91:9200"]
+
+# 中文版
+i18n.locale: "zh-CN"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+在Hadoop配置文件：/opt/module/hadoop-2.7.7/etc/hadoop/core-site.xml
+中添加Hive访问hdfs权限的配置
+注意：需要修改每台机器上的core-site.xml（scp分发）
+-->
+<configuration>
+
+    <!--Hive提供JDBC服务的远程连接：需要修改hdfs的访问权限-->
+    <property>
+        <name>hadoop.proxyuser.root.hosts</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.root.groups</name>
+        <value>*</value>
+    </property>
+
+</configuration>

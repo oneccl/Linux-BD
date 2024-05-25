@@ -1,0 +1,45 @@
+
+### ES配置（每个节点都配） ###
+### /opt/module/elasticsearch-7.5.2/config/elasticsearch.yml ###
+### 配置后分发安装包到其它节点 ###
+
+### ES使用（因安全问题，ES不允许root用户运行）见DemoElasticsearch.java类 ###
+
+# 设置集群名称
+cluster.name: es
+
+# 让当前节点成为master角色（其它节点可不配置）
+node.master: true
+# 设置节点名称（保证每个节点名唯一性）
+node.name: node-91
+# 是否存储数据
+node.data: true
+# 集群最大节点数
+#node.max_local_storage_nodes: 3
+
+# 设置数据保存目录
+path.data: /opt/module/elasticsearch-7.5.2/data
+# 设置日志目录
+path.logs: /opt/module/elasticsearch-7.5.2/logs
+
+# 关闭内存锁定
+bootstrap.memory_lock: false
+
+# 设置主机名（分发后修改节点主机名）
+network.host: bd91
+# 设置服务端口
+http.port: 9200
+# 开启所有机器可远程访问
+http.host: 0.0.0.0
+
+# 支持跨域，可以让head等第3方插件访问es
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+# 节点间的通信端口
+transport.tcp.port: 9300
+
+# 设置集群中的所有节点信息
+discovery.seed_hosts: ["bd91:9300", "bd92:9300", "bd93:9300"]
+# 设置集群的master节点信息
+cluster.initial_master_nodes: ["node-91"]

@@ -1,0 +1,4 @@
+
+# 主节点机器（JobManager作业管理器）workers同原来
+bd91:8081
+bd92:8081

@@ -1,0 +1,12 @@
+
+### Hadoop HA高可用（QJM） ###
+### 前提：配置Zookeeper ###
+### NN HA下的Yarn HA高可用：见文件：Yarn/rm_ha/ ###
+
+### 4、配置datanode启动的节点 ###
+
+文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/slaves
+
+bd91
+bd92
+bd93

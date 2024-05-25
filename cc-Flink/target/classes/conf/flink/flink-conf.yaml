@@ -1,0 +1,18 @@
+
+##### Flink JobManager配置 #####
+
+# Flink集群主节点启动的机器
+jobmanager.rpc.address: bd91
+
+# Flink集群任务提交使用的端口
+jobmanager.rpc.port: 6123
+
+# Flink每个节点允许开放的任务插槽数(并发度)，默认1
+taskmanager.numberOfTaskSlots: 4
+
+# 设置提交的任务执行默认并发度
+parallelism.default: 1
+
+# Flink主节点的Web-UI访问端口
+rest.port: 8081
+

@@ -1,0 +1,8 @@
+
+### 4、配置datanode启动的节点 ###
+
+文件位置：/opt/module/hadoop-2.7.7/etc/hadoop/slaves
+
+bd91
+bd92
+bd93
